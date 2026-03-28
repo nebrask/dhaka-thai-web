@@ -1,0 +1,139 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Contact" activePage="contact">
+
+  <div class="contact-hero">
+    <div class="contact-hero-content">
+      <div class="section-label">We'd Love to Hear From You</div>
+      <h1>Contact <em>Us</em></h1>
+    </div>
+  </div>
+
+  <div class="contact-body">
+    <div>
+      <h2 class="contact-info-title">Visit Us &amp;<br/><em>Say Hello</em></h2>
+
+      <div class="contact-block">
+        <div class="contact-block-label">Address</div>
+        <div class="contact-block-value">50 Danforth Road<br/>Scarborough, ON M1L 3W4</div>
+      </div>
+
+      <div class="contact-block">
+        <div class="contact-block-label">Phone</div>
+        <div class="contact-block-value">
+          <a href="tel:14166377137">(416) 637-7137</a><br/>
+          <a href="tel:14378692007">(437) 869-2007</a>
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <div class="contact-block-label">Hours</div>
+        <div class="contact-block-value">
+          <table class="hours-table">
+            <tr><td>Monday – Friday</td><td>11:00 AM – 10:00 PM</td></tr>
+            <tr class="weekend"><td>Saturday</td><td>9:00 AM – 10:00 PM</td></tr>
+            <tr class="weekend"><td>Sunday</td><td>9:00 AM – 10:00 PM</td></tr>
+          </table>
+          <div class="hours-note">★ Weekend Breakfast served Sat &amp; Sun, 9:00 AM – 1:00 PM</div>
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <div class="contact-block-label">Catering</div>
+        <div class="contact-block-value">Available for parties, family gatherings &amp; corporate events.<br/>Call us to plan your next event.</div>
+      </div>
+
+      <div class="map-embed">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2883.5!2d-79.2877!3d43.6986!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cefb4b29e1a5%3A0x0!2s50+Danforth+Rd%2C+Scarborough%2C+ON+M1L+3W4!5e0!3m2!1sen!2sca!4v1234567890"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="contact-form-title">Send Us a <em>Message</em></h2>
+      <form id="contactForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="name">Your Name</label>
+          <input id="name" type="text" class="form-input" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input id="email" type="email" class="form-input" placeholder="john@example.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone (optional)</label>
+          <input id="phone" type="tel" class="form-input" placeholder="(416) 000-0000" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="subject">Subject</label>
+          <input id="subject" type="text" class="form-input" placeholder="Reservation, Catering Inquiry, etc." />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">Message</label>
+          <textarea id="message" class="form-input" placeholder="Tell us how we can help you..."></textarea>
+        </div>
+        <button type="submit" class="form-submit" id="submitBtn">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+</Layout>
+
+<script>
+  document.getElementById('contactForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn') as HTMLButtonElement;
+    btn.textContent = 'Message Sent ✓';
+    btn.style.background = 'var(--green)';
+    btn.disabled = true;
+  });
+</script>
+
+<style>
+  .contact-hero {
+    height: 38vh; min-height: 260px; position: relative;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    background: linear-gradient(160deg, var(--dark) 0%, var(--dark-card2) 100%); overflow: hidden;
+  }
+  .contact-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(15,106,68,0.3) 0%, transparent 70%);
+  }
+  .contact-hero-content { position: relative; z-index: 1; }
+  .contact-hero-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 700; color: var(--cream); }
+  .contact-hero-content h1 em { color: var(--green); font-style: italic; }
+  .contact-hero-content .section-label { margin-bottom: 0.6rem; }
+
+  .contact-body { max-width: 1000px; margin: 0 auto; padding: 5rem 2rem 6rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-info-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; color: var(--cream); margin-bottom: 2rem; line-height: 1.1; }
+  .contact-info-title em { font-style: italic; color: var(--gold); }
+  .contact-block { margin-bottom: 2rem; }
+  .contact-block-label { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+  .contact-block-label::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+  .contact-block-value { font-size: 0.9rem; color: var(--cream-dim); line-height: 1.8; }
+  .contact-block-value a { color: var(--cream-dim); text-decoration: none; transition: color 0.2s; }
+  .contact-block-value a:hover { color: var(--gold); }
+  .hours-table { width: 100%; }
+  .hours-table tr td { padding: 0.3rem 0; font-size: 0.8rem; color: var(--cream-dim); }
+  .hours-table tr td:last-child { text-align: right; color: var(--gold); }
+  .hours-table .weekend td { color: var(--gold-light); }
+  .hours-note { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic; }
+  .map-embed { margin-top: 2rem; border: 1px solid var(--border); aspect-ratio: 16/9; overflow: hidden; }
+  .map-embed iframe { width: 100%; height: 100%; border: none; filter: grayscale(20%) sepia(10%); }
+
+  .contact-form-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; color: var(--cream); margin-bottom: 2rem; }
+  .contact-form-title em { font-style: italic; color: var(--gold); }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-label { display: block; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .form-input { width: 100%; background: var(--dark-card); border: 1px solid var(--border); color: var(--cream); padding: 0.85rem 1rem; font-family: 'Josefin Sans', sans-serif; font-size: 0.82rem; font-weight: 300; outline: none; transition: border-color 0.2s; }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: var(--text-muted); }
+  textarea.form-input { resize: vertical; min-height: 120px; }
+  .form-submit { width: 100%; background: var(--red); color: #fff; border: 1px solid var(--gold); padding: 1rem; font-family: 'Josefin Sans', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: background 0.25s; }
+  .form-submit:hover { background: var(--gold); color: var(--dark); }
+
+  @media (max-width: 768px) { .contact-body { grid-template-columns: 1fr; gap: 3rem; } }
+</style>

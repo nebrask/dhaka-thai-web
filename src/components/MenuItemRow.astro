@@ -1,0 +1,13 @@
+---
+const { name, desc, price, priceAlt } = Astro.props;
+---
+<div class="menu-item">
+  <div class="menu-item-left">
+    <div class="menu-item-name">{name}</div>
+    {desc && <div class="menu-item-desc">{desc}</div>}
+  </div>
+  <div class="menu-item-right">
+    <div class="menu-item-price">{price}</div>
+    {priceAlt && <div class="menu-item-price-alt">{priceAlt}</div>}
+  </div>
+</div>

@@ -1,0 +1,121 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="About" activePage="about">
+
+  <div class="about-hero">
+    <div class="about-hero-content">
+      <div class="section-label">Who We Are</div>
+      <h1>About <em>Dhaka Thai Grill</em></h1>
+    </div>
+  </div>
+
+  <section class="about-main">
+    <div class="about-main-grid">
+      <div>
+        <div class="about-block-label">Our Mission</div>
+        <h2 class="about-block-heading">Fresh. Flavourful.<br/><em>Prepared with Care.</em></h2>
+        <p class="about-block-body">
+          At Dhaka Thai Grill, we are committed to delivering fresh, flavourful meals inspired by
+          Thai &amp; Chinese cuisine and grill traditions.
+        </p>
+        <p class="about-block-body" style="margin-top:1rem">
+          Our focus is on quality ingredients, efficient service, and a consistent customer experience.
+          We aim to create a reliable takeout destination where every meal is prepared with care.
+        </p>
+      </div>
+      <div class="about-signboard-panel">
+        <img src="/signboard.png" alt="Dhaka Thai & Grill" class="about-signboard-img" />
+      </div>
+    </div>
+  </section>
+
+  <section class="values-section">
+    <div class="section-header">
+      <div class="section-label">What We Stand For</div>
+      <h2 class="section-title">Our <em>Values</em></h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🌿</div>
+        <div class="value-title">Fresh Ingredients</div>
+        <div class="value-desc">Every dish is made with carefully sourced, quality ingredients. We never compromise on freshness.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <div class="value-title">Efficient Service</div>
+        <div class="value-desc">We respect your time. Quick, reliable service is at the heart of everything we do.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🍽️</div>
+        <div class="value-title">Consistent Quality</div>
+        <div class="value-desc">From your first visit to your hundredth, every meal meets the same high standard.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <div class="value-title">Community First</div>
+        <div class="value-desc">Rooted in Scarborough, we're proud to serve our local community with food that feels like home.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="about-cta-banner">
+    <h2>Ready to Try Our Food?</h2>
+    <p>Order online or visit us at 50 Danforth Road, Scarborough.</p>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:2rem">
+      <a href="/order"   class="btn-primary">Order Online</a>
+      <a href="/menu"    class="btn-outline">View Menu</a>
+      <a href="/contact" class="btn-outline">Get Directions</a>
+    </div>
+  </div>
+
+</Layout>
+
+<style>
+  .about-hero {
+    height: 40vh; min-height: 280px; position: relative;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    background: linear-gradient(160deg, var(--dark) 0%, var(--dark-card2) 100%); overflow: hidden;
+  }
+  .about-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(226,35,26,0.3) 0%, transparent 70%);
+  }
+  .about-hero-content { position: relative; z-index: 1; }
+  .about-hero-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 700; color: var(--cream); }
+  .about-hero-content h1 em { color: var(--red); font-style: italic; }
+  .about-hero-content .section-label { margin-bottom: 0.8rem; }
+
+  .about-main { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .about-main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-block-label { font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .about-block-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 600; color: var(--cream); line-height: 1.15; margin-bottom: 1.5rem; }
+  .about-block-heading em { font-style: italic; color: var(--green); }
+  .about-block-body { font-size: 0.88rem; line-height: 1.95; color: var(--cream-dim); font-weight: 300; }
+
+  .about-signboard-panel { background: var(--cream); padding: 1.5rem; border: 1px solid rgba(226,35,26,0.15); }
+  .about-signboard-img { width: 100%; display: block; mix-blend-mode: multiply; }
+
+  .values-section { background: var(--dark-card); padding: 4rem 2rem 6rem; }
+  .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .value-card { background: var(--dark-card2); border: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; transition: border-color 0.3s; }
+  .value-card:hover { border-color: rgba(201,162,39,0.4); }
+  .value-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .value-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: var(--cream); margin-bottom: 0.6rem; }
+  .value-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
+
+  .about-cta-banner {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    padding: 5rem 2rem; text-align: center;
+  }
+  .about-cta-banner h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--gold-light); margin-bottom: 0.8rem; }
+  .about-cta-banner p { font-size: 0.85rem; color: rgba(245,236,215,0.8); }
+
+  @media (max-width: 768px) {
+    .about-main-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .values-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 500px) {
+    .values-grid { grid-template-columns: 1fr; }
+  }
+</style>

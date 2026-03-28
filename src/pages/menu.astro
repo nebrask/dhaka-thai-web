@@ -1,0 +1,295 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SHEET_URL, getGvizUrl } from '../data/menu.js';
+
+const tabGroups = [
+  { id: "appetizers", label: "Appetizers" },
+  { id: "burgers",    label: "Burgers & Sides" },
+  { id: "hakka",      label: "Hakka & Thai" },
+  { id: "signature",  label: "Signature" },
+  { id: "kabab",      label: "Kabab & Tandoor" },
+  { id: "curry",      label: "Curry" },
+  { id: "biryani",    label: "Biryani & Rice" },
+  { id: "bread",      label: "Naan & Bread" },
+  { id: "salad",      label: "Salad" },
+  { id: "dessert",    label: "Dessert" },
+  { id: "drinks",     label: "Drinks" },
+  { id: "breakfast",  label: "Breakfast" },
+  { id: "catering",   label: "Catering" },
+];
+
+
+const gvizUrl = getGvizUrl(SHEET_URL);
+---
+<Layout title="Menu" activePage="menu">
+
+  <div class="menu-hero">
+    <div class="menu-hero-content">
+      <h1>Our <em>Menu</em></h1>
+      <p class="menu-intro">Explore a variety of Thai dishes, grilled items, and quick bites.</p>
+    </div>
+  </div>
+
+  <div class="menu-topbar">
+    <div class="menu-note">* Taxes extra &nbsp;·&nbsp; Some items may contain nuts &nbsp;·&nbsp; Prices subject to change</div>
+    <a href="/order" class="btn-primary menu-order-btn">Order Now →</a>
+  </div>
+
+  <div class="menu-tabs-wrapper">
+    <div class="menu-tabs" id="menuTabs">
+      {tabGroups.map((t) => (
+        <button class="tab-btn" data-target={t.id}>{t.label}</button>
+      ))}
+    </div>
+  </div>
+
+  <div class="menu-body">
+    <div class="loading-state" id="loadingState">
+      <div class="skeleton-block"></div>
+      <div class="skeleton-block"></div>
+      <div class="skeleton-block"></div>
+    </div>
+    <div id="menuContent"></div>
+    <div class="error-state" id="errorState" style="display:none">
+      <p>Unable to load menu right now.</p>
+      <p>Please call us at <a href="tel:14166377137">(416) 637-7137</a> or <a href="tel:14378692007">(437) 869-2007</a>.</p>
+    </div>
+  </div>
+
+</Layout>
+
+<script define:vars={{ gvizUrl }}>
+function parseGvizResponse(text) {
+  const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf(')'));
+  const json = JSON.parse(jsonStr);
+  if (!json.table) { console.error("No table in response"); return []; }
+  const cols = json.table.cols || [];
+  const dataRows = json.table.rows || [];
+  const labels = cols.map(c => (c.label || "").trim());
+  const hasLabels = labels.some(l => l.length > 0);
+  let headers, rows;
+  if (hasLabels) { headers = labels; rows = dataRows; }
+  else {
+    if (!dataRows.length) { console.error("No data rows"); return []; }
+    headers = dataRows[0].c.map(cell => cell?.v != null ? String(cell.v).trim() : "");
+    rows = dataRows.slice(1);
+  }
+  const normalise = s => s.split(/[\n(]/)[0].trim().toLowerCase().replace(/\s+/g, "_");
+  const normHeaders = headers.map(normalise);
+  const keys = ["section_id","section_label","name","description","price","price_alt","note","type"];
+  const idx = {};
+  keys.forEach(k => { const i = normHeaders.indexOf(k); if (i !== -1) idx[k] = i; });
+  if (!("section_id" in idx)) { console.error("Missing section_id column. Headers:", normHeaders); return []; }
+  return rows.filter(r => r && r.c).map(r => {
+    const obj = {};
+    keys.forEach(k => { const i = idx[k]; obj[k] = (i !== undefined && r.c[i]?.v != null) ? String(r.c[i].v).trim() : ""; });
+    return obj;
+  });
+}
+
+function groupIntoSections(rows) {
+  const map = new Map();
+  for (const row of rows) {
+    const id = row.section_id;
+    if (!id) continue;
+    if (!map.has(id)) map.set(id, { id, label: row.section_label, note: row.note || "", items: [] });
+    if (row.name) {
+      map.get(id).items.push({ name: row.name, desc: row.description || "", price: row.price || "", priceAlt: row.price_alt || "", type: row.type || "" });
+    }
+  }
+  return Array.from(map.values());
+}
+
+function renderStandardSection(section) {
+  const items = section.items.map(item => `
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">${item.name}</div>
+        ${item.desc ? `<div class="menu-item-desc">${item.desc}</div>` : ""}
+      </div>
+      <div class="menu-item-right">
+        <div class="menu-item-price">${item.price}</div>
+        ${item.priceAlt ? `<div class="menu-item-price-alt">${item.priceAlt}</div>` : ""}
+      </div>
+    </div>`).join("");
+  return `
+    <div class="menu-section" id="${section.id}">
+      <div class="menu-section-header">
+        <div class="menu-section-title">${section.label}</div>
+        <div class="menu-section-line"></div>
+      </div>
+      ${section.note ? `<div class="menu-section-note">${section.note}</div>` : ""}
+      <div class="menu-items">${items}</div>
+    </div>`;
+}
+
+function renderBreakfastSection(section) {
+  const packages = section.items.filter(i => i.type === "package");
+  const addons   = section.items.filter(i => i.type === "addon");
+  const pkgBoxes = packages.map(pkg => {
+    const lines = pkg.desc.split("|").filter(Boolean).map(l => `<li>${l.trim()}</li>`).join("");
+    return `<div class="breakfast-box"><h4>${pkg.name}</h4><div class="b-price">${pkg.price}</div><ul>${lines}</ul></div>`;
+  }).join("");
+  const addonRows = addons.map(a => `
+    <div class="menu-item" style="padding:0.4rem 0">
+      <div class="menu-item-left"><div class="menu-item-desc" style="color:var(--cream-dim)">${a.name}</div></div>
+      <div class="menu-item-right"><div class="addon-price">${a.price}</div></div>
+    </div>`).join("");
+  const addonsBox = addons.length ? `<div class="breakfast-box"><h4>Add-On Items</h4><div class="menu-items">${addonRows}</div></div>` : "";
+  return `
+    <div class="menu-section" id="${section.id}">
+      <div class="menu-section-header"><div class="menu-section-title">${section.label}</div><div class="menu-section-line"></div></div>
+      ${section.note ? `<div class="menu-section-note">${section.note}</div>` : ""}
+      <div class="breakfast-grid">${pkgBoxes}${addonsBox}</div>
+    </div>`;
+}
+
+function renderCateringSection(section) {
+  const packages = section.items.filter(i => i.type === "catering_pkg");
+  const pkgBoxes = packages.map(pkg => {
+    const rows = pkg.desc.split("|").filter(Boolean).map(pair => {
+      const ci = pair.lastIndexOf(":");
+      const n = ci !== -1 ? pair.substring(0, ci).trim() : pair.trim();
+      const p = ci !== -1 ? pair.substring(ci + 1).trim() : "";
+      return `<div class="pkg-item"><span>${n}</span><span>${p}</span></div>`;
+    }).join("");
+    return `<div class="catering-pkg"><div class="pkg-name">${pkg.name}</div>${pkg.priceAlt ? `<div class="pkg-min">${pkg.priceAlt}</div>` : ""}${rows}</div>`;
+  }).join("");
+  return `
+    <div class="menu-section" id="${section.id}">
+      <div class="menu-section-header"><div class="menu-section-title">${section.label}</div><div class="menu-section-line"></div></div>
+      <div class="catering-box">
+        <p>${section.note || "We offer catering for parties, family gatherings, and corporate events."}</p>
+        <div class="catering-packages">${pkgBoxes}</div>
+        <div style="margin-top:2rem"><a href="/contact" class="btn-primary">Enquire About Catering</a></div>
+      </div>
+    </div>`;
+}
+
+function renderSection(section) {
+  if (section.items.some(i => i.type === "package" || i.type === "addon")) return renderBreakfastSection(section);
+  if (section.items.some(i => i.type === "catering_pkg")) return renderCateringSection(section);
+  return renderStandardSection(section);
+}
+
+function initTabs() {
+  const tabs = document.querySelectorAll(".tab-btn");
+  tabs.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const el = document.getElementById(btn.dataset.target);
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 124, behavior: "smooth" });
+      tabs.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
+  window.addEventListener("scroll", () => {
+    const sections = document.querySelectorAll(".menu-section");
+    let current = "";
+    sections.forEach(s => { if (s.getBoundingClientRect().top <= 132) current = s.id; });
+    tabs.forEach(btn => btn.classList.toggle("active", btn.dataset.target === current));
+  });
+  if (tabs.length) tabs[0].classList.add("active");
+}
+
+async function loadMenu() {
+  const loading = document.getElementById("loadingState");
+  const content = document.getElementById("menuContent");
+  const error   = document.getElementById("errorState");
+  try {
+    const res = await fetch(gvizUrl);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = parseGvizResponse(await res.text());
+    const sections = groupIntoSections(rows);
+    if (!sections.length) throw new Error("No sections found.");
+    content.innerHTML = sections.map(renderSection).join("");
+    loading.style.display = "none";
+    initTabs();
+  } catch (err) {
+    console.error("Menu load failed:", err);
+    loading.style.display = "none";
+    error.style.display = "block";
+    initTabs();
+  }
+}
+document.addEventListener("DOMContentLoaded", loadMenu);
+</script>
+
+<style is:global>
+  .menu-hero {
+    height: 38vh; min-height: 280px; position: relative;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    background: linear-gradient(160deg, var(--dark) 0%, var(--dark-card2) 100%); overflow: hidden;
+  }
+  .menu-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(226,35,26,0.3) 0%, transparent 70%);
+  }
+  .menu-hero-content { position: relative; z-index: 1; }
+  .menu-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 700; color: var(--cream); line-height: 1; }
+  .menu-hero h1 em { color: var(--red); font-style: italic; }
+  .menu-intro { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 300; color: var(--cream-dim); letter-spacing: 0.05em; margin-top: 0.8rem; font-style: italic; }
+
+  .menu-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 2rem; border-bottom: 1px solid var(--border);
+    background: rgba(226,35,26,0.06); max-width: 100%;
+    flex-wrap: wrap; gap: 0.8rem;
+  }
+  .menu-note { font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.04em; }
+  .menu-order-btn { padding: 0.5rem 1.4rem; font-size: 0.68rem; }
+
+  .menu-tabs-wrapper { position: sticky; top: 72px; z-index: 50; background: var(--dark); border-bottom: 1px solid var(--border); }
+  .menu-tabs { display: flex; overflow-x: auto; padding: 0 2rem; max-width: 1400px; margin: 0 auto; scrollbar-width: none; }
+  .menu-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0; padding: 1rem 1.1rem;
+    font-family: 'Josefin Sans', sans-serif; font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; border: none;
+    background: none; color: var(--text-muted); transition: color 0.2s; white-space: nowrap;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--cream-dim); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .menu-body { max-width: 1000px; margin: 0 auto; padding: 0 2rem 6rem; }
+  .loading-state { padding-top: 4rem; display: flex; flex-direction: column; gap: 2rem; }
+  .skeleton-block {
+    height: 180px;
+    background: linear-gradient(90deg, var(--dark-card) 25%, var(--dark-card2) 50%, var(--dark-card) 75%);
+    background-size: 200% 100%; border: 1px solid var(--border); animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .error-state { padding: 3rem 2rem; text-align: center; font-size: 0.85rem; color: var(--text-muted); line-height: 2; }
+  .error-state a { color: var(--gold); }
+
+  .menu-section { padding-top: 4rem; }
+  .menu-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .menu-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 0.05em; }
+  .menu-section-line { flex: 1; height: 1px; background: var(--border); }
+  .menu-section-note { font-size: 0.7rem; color: var(--text-muted); font-style: italic; margin-bottom: 1.5rem; margin-top: -1rem; }
+  .menu-items { display: flex; flex-direction: column; }
+
+  .breakfast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .breakfast-box { background: var(--dark-card2); border: 1px solid var(--border); padding: 1.5rem; margin-top: 1rem; }
+  .breakfast-box h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: var(--cream); margin-bottom: 0.3rem; }
+  .b-price { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 0.5rem; }
+  .breakfast-box ul { list-style: none; }
+  .breakfast-box ul li { font-size: 0.73rem; color: var(--text-muted); padding: 0.15rem 0; }
+  .breakfast-box ul li::before { content: '— '; color: var(--green); }
+  .addon-price { font-size: 0.9rem; color: var(--gold); font-family: 'Cormorant Garamond', serif; font-weight: 700; }
+
+  .catering-box { background: linear-gradient(135deg, var(--red-dark), var(--dark-card2)); border: 1px solid var(--gold); padding: 2rem; margin-top: 1rem; text-align: center; }
+  .catering-box p { font-size: 0.8rem; color: var(--cream-dim); font-weight: 300; margin-bottom: 1.5rem; line-height: 1.8; }
+  .catering-packages { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .catering-pkg { background: rgba(255,255,255,0.04); padding: 1.5rem; border: 1px solid var(--border); }
+  .pkg-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--gold); margin-bottom: 0.3rem; }
+  .pkg-min { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+  .pkg-item { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--cream-dim); margin-bottom: 0.3rem; }
+  .pkg-item span:last-child { color: var(--gold); font-weight: 600; font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; }
+
+  @media (max-width: 768px) {
+    .breakfast-grid { grid-template-columns: 1fr; }
+    .catering-packages { grid-template-columns: 1fr; }
+    .menu-topbar { flex-direction: column; align-items: flex-start; }
+  }
+</style>

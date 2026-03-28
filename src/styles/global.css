@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Josefin+Sans:wght@300;400;600;700&family=Poppins:ital,wght@0,300;0,400;1,300&display=swap');
+
+:root {
+  /* Brand colours from logo */
+  --red:         #E2231A;
+  --red-dark:    #8B0F0A;
+  --red-mid:     #C41E14;
+  --green:       #0F6A44;
+  --green-dark:  #0A4D32;
+  --gold:        #C9A227;
+  --gold-light:  #E2C15A;
+  --cream:       #F5ECD7;
+  --cream-dim:   #D4C4A8;
+  /* Dark theme base */
+  --dark:        #0E0806;
+  --dark-card:   #1A1008;
+  --dark-card2:  #221508;
+  --text-muted:  #9A8A6A;
+  --border:      rgba(201,162,39,0.22);
+  /* Legacy aliases so existing components keep working */
+  --maroon:      var(--red);
+  --maroon-dark: var(--red-dark);
+  --maroon-mid:  var(--red-mid);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background: var(--dark);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 999;
+  padding: 0 2rem;
+  display: flex; align-items: center;
+  background: linear-gradient(to bottom, rgba(14,8,6,0.97) 0%, rgba(14,8,6,0.9) 100%);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  height: 72px;
+}
+.nav-logo-wrap { flex: 1; display: flex; align-items: center; }
+.nav-logo-img  { height: 48px; width: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; }
+.nav-links-wrap { flex: 2; display: flex; justify-content: center; }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cream-dim); text-decoration: none; font-weight: 600;
+  transition: color 0.2s; cursor: pointer;
+  position: relative; padding-bottom: 4px;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
+  background: var(--gold); transition: width 0.3s;
+}
+.nav-links a:hover, .nav-links a[data-active="true"] { color: var(--gold); }
+.nav-links a:hover::after, .nav-links a[data-active="true"]::after { width: 100%; }
+.nav-cta-wrap { flex: 1; display: flex; justify-content: flex-end; }
+.nav-cta {
+  background: var(--red); color: #fff;
+  border: 1px solid var(--gold); padding: 0.45rem 1.2rem;
+  font-family: 'Josefin Sans', sans-serif; font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer;
+  transition: background 0.25s, color 0.25s; text-decoration: none;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; margin-left: auto; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); transition: 0.3s; }
+.mobile-menu {
+  display: none; position: fixed; top: 72px; left: 0; width: 100%;
+  background: rgba(14,8,6,0.98); padding: 2rem;
+  border-bottom: 1px solid var(--border); z-index: 998;
+  flex-direction: column; gap: 1.5rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cream-dim); text-decoration: none; font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--red); color: #fff;
+  border: 1px solid var(--gold); padding: 0.85rem 2.2rem;
+  font-family: 'Josefin Sans', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer;
+  transition: background 0.25s, color 0.25s; text-decoration: none; display: inline-block;
+}
+.btn-primary:hover { background: var(--gold); color: var(--dark); }
+.btn-outline {
+  background: transparent; color: var(--cream-dim);
+  border: 1px solid rgba(245,236,215,0.35); padding: 0.85rem 2.2rem;
+  font-family: 'Josefin Sans', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer;
+  transition: border-color 0.25s, color 0.25s; text-decoration: none; display: inline-block;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.btn-green {
+  background: var(--green); color: #fff;
+  border: 1px solid var(--green); padding: 0.85rem 2.2rem;
+  font-family: 'Josefin Sans', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer;
+  transition: background 0.25s; text-decoration: none; display: inline-block;
+}
+.btn-green:hover { background: var(--green-dark); }
+
+.ornament-divider {
+  text-align: center; padding: 1rem; color: var(--gold); font-size: 1.2rem; opacity: 0.4; letter-spacing: 0.5rem;
+}
+.section-header { text-align: center; padding: 5rem 2rem 3rem; }
+.section-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 600; color: var(--cream); }
+.section-title em { font-style: italic; color: var(--red); }
+
+.site-footer-wrap {
+  background: linear-gradient(135deg, #0A0504 0%, #1A0A06 100%);
+  border-top: 2px solid var(--red);
+}
+.site-footer {
+  padding: 3.5rem 2rem 2rem;
+  display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 3rem; max-width: 1200px; margin: 0 auto;
+}
+.f-brand-logo { height: 80px; width: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; }
+.f-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--gold); margin-bottom: 0.3rem; }
+.f-brand-slogan { font-size: 0.65rem; letter-spacing: 0.1em; color: var(--text-muted); font-style: italic; }
+.f-col-title { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; font-weight: 700; }
+.f-col-text { font-size: 0.75rem; color: var(--cream-dim); line-height: 1.9; font-weight: 300; }
+.f-col-text a { color: var(--cream-dim); text-decoration: none; transition: color 0.2s; }
+.f-col-text a:hover { color: var(--gold); }
+.f-links-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.f-links-list a { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); text-decoration: none; transition: color 0.2s; }
+.f-links-list a:hover { color: var(--gold); }
+.footer-bottom-bar {
+  text-align: center; padding: 1.2rem 2rem; font-size: 0.6rem;
+  color: var(--text-muted); letter-spacing: 0.1em;
+  border-top: 1px solid var(--border);
+}
+
+.menu-item {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem;
+  padding: 1.1rem 0; border-bottom: 1px solid rgba(201,162,39,0.08);
+  transition: background 0.2s; cursor: default;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-item:hover { background: rgba(226,35,26,0.06); margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
+.menu-item-left { flex: 1; min-width: 0; }
+.menu-item-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: var(--cream); margin-bottom: 0.2rem; }
+.menu-item-desc { font-size: 0.73rem; color: var(--text-muted); font-weight: 300; line-height: 1.5; }
+.menu-item-right { text-align: right; flex-shrink: 0; }
+.menu-item-price { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 700; color: var(--gold); }
+.menu-item-price-alt { font-size: 0.7rem; color: var(--text-muted); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+@media (max-width: 900px) {
+  .nav-links-wrap, .nav-cta-wrap { display: none; }
+  .hamburger { display: flex; }
+  .site-footer { grid-template-columns: 1fr 1fr; gap: 2rem; }
+}
+@media (max-width: 600px) {
+  .site-footer { grid-template-columns: 1fr; }
+}

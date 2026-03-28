@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080">
+  <rect width="1920" height="1080" fill="#1A1008"/>
+  <text x="960" y="500" font-family="serif" font-size="48" fill="#C9A227" text-anchor="middle">Add hero2.jpg to /public/</text>
+  <text x="960" y="570" font-family="sans-serif" font-size="28" fill="#9A8A6A" text-anchor="middle">Place a food photo (1920×1080px) named hero2.jpg</text>
+</svg>

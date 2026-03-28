@@ -1,0 +1,149 @@
+---
+interface MenuItem {
+  name: string;
+  description?: string;
+  price: string;
+  priceAlt?: string; // ex. "Single / Double"
+}
+
+interface Props {
+  id: string;
+  title: string;
+  note?: string;
+  items: MenuItem[];
+}
+
+const { id, title, note, items } = Astro.props;
+---
+
+<section class="menu-section" id={id}>
+  <div class="menu-section-header">
+    <h2 class="menu-section-title">{title}</h2>
+    <div class="menu-section-line"></div>
+  </div>
+
+  {note && <p class="menu-section-note">{note}</p>}
+
+  <div class="menu-items">
+    {items.map(item => (
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">{item.name}</div>
+          {item.description && (
+            <div class="menu-item-desc">{item.description}</div>
+          )}
+        </div>
+        <div class="menu-item-right">
+          <div class="menu-item-price">{item.price}</div>
+          {item.priceAlt && (
+            <div class="menu-item-price-alt">{item.priceAlt}</div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .menu-section {
+    padding-top: 4rem;
+  }
+
+  .menu-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .menu-section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--maroon-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .menu-section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .menu-section-note {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    margin-top: -1rem;
+  }
+
+  .menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+    transition: background 0.2s, padding 0.2s;
+    cursor: default;
+  }
+
+  .menu-item:last-child {
+    border-bottom: none;
+  }
+
+  .menu-item:hover {
+    background: rgba(107, 18, 38, 0.08);
+    margin: 0 -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .menu-item-left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .menu-item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.2rem;
+  }
+
+  .menu-item-desc {
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .menu-item-right {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .menu-item-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .menu-item-price-alt {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+</style>

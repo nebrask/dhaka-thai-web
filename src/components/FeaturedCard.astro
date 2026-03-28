@@ -1,0 +1,88 @@
+---
+interface Props {
+  category: string;
+  name: string;
+  description: string;
+  price: string;
+}
+
+const { category, name, description, price } = Astro.props;
+---
+
+<div class="featured-card">
+  <div class="card-cat">{category}</div>
+  <div class="card-name">{name}</div>
+  <div class="card-desc">{description}</div>
+  <div class="card-price">{price}</div>
+  <div class="card-corner"></div>
+</div>
+
+<style>
+  .featured-card {
+    background: var(--dark-card);
+    border: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .featured-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--maroon), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+
+  .featured-card:hover {
+    border-color: rgba(201, 168, 76, 0.4);
+  }
+
+  .featured-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .card-cat {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .card-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .card-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-top: 1.5rem;
+  }
+
+  .card-corner {
+    position: absolute;
+    bottom: 1.5rem; right: 1.5rem;
+    width: 40px; height: 40px;
+    opacity: 0.08;
+    border-right: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+  }
+</style>

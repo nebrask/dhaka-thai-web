@@ -1,0 +1,135 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Order Online" activePage="order">
+
+  <div class="order-hero">
+    <div class="order-hero-content">
+      <div class="section-label">Quick &amp; Easy</div>
+      <h1>Order <em>Online</em></h1>
+      <p>Place your order and enjoy fresh food prepared on time.</p>
+    </div>
+  </div>
+
+  <section class="order-body">
+    <div class="order-phone-banner">
+      <div class="order-phone-icon">📞</div>
+      <div>
+        <div class="order-phone-label">Call to Order</div>
+        <div class="order-phone-nums">
+          <a href="tel:14166377137">(416) 637-7137</a>
+          <span>&nbsp;·&nbsp;</span>
+          <a href="tel:14378692007">(437) 869-2007</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header" style="padding-top:4rem">
+      <div class="section-label">Order Through</div>
+      <h2 class="section-title">Delivery <em>Platforms</em></h2>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-top:1rem;font-weight:300">
+        Find us on your favourite delivery app — links will be added here once active.
+      </p>
+    </div>
+
+    <div class="platform-grid">
+      <div class="platform-card">
+        <div class="platform-logo uber">Uber Eats</div>
+        <div class="platform-name">Uber Eats</div>
+        <div class="platform-desc">Search "Dhaka Thai & Grill" on the Uber Eats app or website.</div>
+        <div class="platform-badge coming">Link Coming Soon</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-logo skip">SkipTheDishes</div>
+        <div class="platform-name">SkipTheDishes</div>
+        <div class="platform-desc">Find us on SkipTheDishes for fast delivery in Scarborough.</div>
+        <div class="platform-badge coming">Link Coming Soon</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-logo door">DoorDash</div>
+        <div class="platform-name">DoorDash</div>
+        <div class="platform-desc">Order through DoorDash for convenient delivery to your door.</div>
+        <div class="platform-badge coming">Link Coming Soon</div>
+      </div>
+    </div>
+
+    <div class="order-hours-box">
+      <div class="order-hours-title">📅 Our Hours</div>
+      <div class="order-hours-grid">
+        <div><span>Monday – Friday</span><span>11:00 AM – 10:00 PM</span></div>
+        <div><span>Saturday</span><span>9:00 AM – 10:00 PM</span></div>
+        <div><span>Sunday</span><span>9:00 AM – 10:00 PM</span></div>
+        <div class="weekend-note"><span>★ Weekend Breakfast</span><span>9:00 AM – 1:00 PM</span></div>
+      </div>
+    </div>
+
+    <div class="order-catering-box">
+      <h3>Planning an Event?</h3>
+      <p>We offer catering for parties, family gatherings, and corporate events. Call us to discuss your requirements.</p>
+      <a href="/contact" class="btn-primary" style="margin-top:1.5rem">Contact for Catering</a>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  .order-hero {
+    height: 38vh; min-height: 260px; position: relative;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    background: linear-gradient(160deg, var(--dark) 0%, var(--dark-card2) 100%); overflow: hidden;
+  }
+  .order-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(15,106,68,0.35) 0%, transparent 70%);
+  }
+  .order-hero-content { position: relative; z-index: 1; }
+  .order-hero-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 700; color: var(--cream); margin: 0.3rem 0; }
+  .order-hero-content h1 em { color: var(--green); font-style: italic; }
+  .order-hero-content p { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; margin-top: 0.5rem; }
+
+  .order-body { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+  .order-phone-banner {
+    background: linear-gradient(135deg, var(--red-dark), var(--red));
+    border: 1px solid var(--gold); padding: 2rem 2.5rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .order-phone-icon { font-size: 2.5rem; }
+  .order-phone-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+  .order-phone-nums { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: #fff; }
+  .order-phone-nums a { color: #fff; text-decoration: none; transition: color 0.2s; }
+  .order-phone-nums a:hover { color: var(--gold); }
+
+  .platform-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; padding: 0 2rem 4rem; max-width: 900px; margin: 0 auto; }
+  .platform-card { background: var(--dark-card); border: 1px solid var(--border); padding: 2rem; text-align: center; transition: border-color 0.3s; }
+  .platform-card:hover { border-color: rgba(201,162,39,0.4); }
+  .platform-logo { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.6rem 1rem; margin-bottom: 1rem; display: inline-block; border-radius: 4px; }
+  .uber  { background: #000; color: #fff; }
+  .skip  { background: #F96302; color: #fff; }
+  .door  { background: #FF3008; color: #fff; }
+  .platform-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: var(--cream); margin-bottom: 0.5rem; }
+  .platform-desc { font-size: 0.73rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+  .platform-badge { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; padding: 0.3rem 0.8rem; display: inline-block; }
+  .coming { background: rgba(201,162,39,0.15); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+
+  .order-hours-box { background: var(--dark-card); border: 1px solid var(--border); padding: 2rem; margin-bottom: 2rem; }
+  .order-hours-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--cream); margin-bottom: 1.2rem; }
+  .order-hours-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+  .order-hours-grid div { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--cream-dim); padding: 0.4rem 0; border-bottom: 1px solid rgba(201,162,39,0.08); }
+  .order-hours-grid div:last-child { border-bottom: none; }
+  .order-hours-grid div span:last-child { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; }
+  .weekend-note span:first-child { color: var(--gold-light); }
+
+  .order-catering-box {
+    background: linear-gradient(135deg, var(--green-dark), var(--dark-card2));
+    border: 1px solid var(--green); padding: 2.5rem; text-align: center;
+  }
+  .order-catering-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--cream); margin-bottom: 0.8rem; }
+  .order-catering-box p { font-size: 0.82rem; color: var(--cream-dim); font-weight: 300; line-height: 1.8; }
+
+  @media (max-width: 640px) {
+    .platform-grid { grid-template-columns: 1fr; }
+    .order-phone-banner { flex-direction: column; text-align: center; }
+  }
+</style>
