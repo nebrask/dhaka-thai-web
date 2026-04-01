@@ -13,11 +13,12 @@ import { featuredDishes } from '../data/menu.js';
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
-      <img src="/logo.png" alt="Dhaka Thai & Grill" class="hero-logo" />
-      <p class="hero-slogan">Authentic Flavours. Taste You Trust.</p>
+      <img src="/signboard.png" alt="Dhaka Thai & Grill" class="hero-signboard" />
+      <!-- <p class="hero-slogan">Authentic Flavours. Taste You Trust.</p>
       <div class="hero-cuisines">
         <span>Bangladeshi</span><span>Chinese</span><span>Thai</span><span>Kabab &amp; Grill</span>
       </div>
+      -->
       <div class="hero-btns">
         <a href="/menu"  class="btn-primary">Explore Menu</a>
         <a href="/order" class="btn-green">Order Online</a>
@@ -148,12 +149,10 @@ import { featuredDishes } from '../data/menu.js';
     max-width: 820px; padding: 2rem;
     display: flex; flex-direction: column; align-items: center; gap: 1rem;
   }
-  .hero-logo {
-    width: 130px; height: 130px; border-radius: 50%; object-fit: cover;
-    border: 3px solid var(--gold);
-    box-shadow: 0 0 40px rgba(201,162,39,0.3);
+  .hero-signboard {
+    width: min(660px, 91vw);
+    height: auto;
     animation: fadeUp 0.8s ease both;
-    background: var(--cream);
   }
   .hero-slogan {
     font-family: 'Poppins', sans-serif;
@@ -258,7 +257,7 @@ import { featuredDishes } from '../data/menu.js';
   }
   .featured-card:hover { border-color: rgba(201,162,39,0.4); }
   .featured-card:hover::before { transform: scaleX(1); }
-  .card-cat { font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--green); margin-bottom: 1rem; }
+  .card-cat { font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
   .card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--cream); margin-bottom: 0.5rem; line-height: 1.2; }
   .card-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
   .card-price { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--gold); margin-top: 1.5rem; }
