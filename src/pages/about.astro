@@ -16,13 +16,14 @@ import Layout from '../layouts/Layout.astro';
         <div class="about-block-label">Our Mission</div>
         <h2 class="about-block-heading">Fresh. Flavourful.<br/><em>Prepared with Care.</em></h2>
         <p class="about-block-body">
-          At Dhaka Thai Grill, we are committed to delivering fresh, flavourful meals inspired by
-          Thai &amp; Chinese cuisine and grill traditions.
+          We provide fresh, high-quality meals with consistent taste and reliable service, creating a takeout experience our customers can trust and enjoy every day.
         </p>
+        <!--
         <p class="about-block-body" style="margin-top:1rem">
           Our focus is on quality ingredients, efficient service, and a consistent customer experience.
           We aim to create a reliable takeout destination where every meal is prepared with care.
         </p>
+        -->
       </div>
       <div class="about-signboard-panel">
         <img src="/signboard.png" alt="Dhaka Thai & Grill" class="about-signboard-img" />
@@ -63,8 +64,8 @@ import Layout from '../layouts/Layout.astro';
     <h2>Ready to Try Our Food?</h2>
     <p>Order online or visit us at 50 Danforth Road, Scarborough.</p>
     <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:2rem">
-      <a href="/order"   class="btn-primary">Order Online</a>
-      <a href="/menu"    class="btn-outline">View Menu</a>
+      <a href="/menu"    class="btn-primary">View Menu</a>
+      <a href="/order"   class="btn-green">Order Online</a>
       <a href="/contact" class="btn-outline">Get Directions</a>
     </div>
   </div>
@@ -83,14 +84,14 @@ import Layout from '../layouts/Layout.astro';
   }
   .about-hero-content { position: relative; z-index: 1; }
   .about-hero-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 700; color: var(--cream); }
-  .about-hero-content h1 em { color: var(--red); font-style: italic; }
+  .about-hero-content h1 em { color: var(--red); font-style: normal; }
   .about-hero-content .section-label { margin-bottom: 0.8rem; }
 
   .about-main { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
   .about-main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
   .about-block-label { font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
   .about-block-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 600; color: var(--cream); line-height: 1.15; margin-bottom: 1.5rem; }
-  .about-block-heading em { font-style: italic; color: var(--green); }
+  .about-block-heading em { font-style: normal; color: var(--green); }
   .about-block-body { font-size: 0.88rem; line-height: 1.95; color: var(--cream-dim); font-weight: 300; }
 
   .about-signboard-panel { background: var(--cream); padding: 1.5rem; border: 1px solid rgba(226,35,26,0.15); }
@@ -105,7 +106,7 @@ import Layout from '../layouts/Layout.astro';
   .value-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
 
   .about-cta-banner {
-    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    background: linear-gradient(135deg, rgba(50, 110, 70, 0.4) 0%, rgba(76, 152, 92, 0.5) 100%);
     padding: 5rem 2rem; text-align: center;
   }
   .about-cta-banner h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--gold-light); margin-bottom: 0.8rem; }
