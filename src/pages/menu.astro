@@ -3,21 +3,21 @@ import Layout from '../layouts/Layout.astro';
 import { SHEET_URL, getGvizUrl } from '../data/menu.js';
 
 const tabGroups = [
-  { id: "appetizers", label: "Appetizers" },
-  { id: "burgers",    label: "Burgers & Sides" },
-  { id: "hakka",      label: "Hakka & Thai" },
-  { id: "signature",  label: "Signature" },
-  { id: "kabab",      label: "Kabab & Tandoor" },
-  { id: "curry",      label: "Curry" },
-  { id: "biryani",    label: "Biryani & Rice" },
-  { id: "bread",      label: "Naan & Bread" },
-  { id: "salad",      label: "Salad" },
-  { id: "dessert",    label: "Dessert" },
-  { id: "drinks",     label: "Drinks" },
-  { id: "breakfast",  label: "Breakfast" },
-  { id: "catering",   label: "Catering" },
+  { id: "appetizers",     label: "Appetizers" },
+  { id: "burgers",        label: "Burger, Fries & Sides" },
+  { id: "hakka",          label: "Chinese & Thai" },
+  { id: "kabab",          label: "Kabab & Tandoor" },
+  { id: "bread",          label: "Naan & Bread" },
+  { id: "biryani",        label: "Rice Specialties" },
+  { id: "curry",          label: "Curry & Vegetables" },
+  { id: "salad",          label: "Salad" },
+  { id: "dessert",        label: "Dessert" },
+  { id: "drinks",         label: "Drinks" },
+  { id: "breakfast",      label: "Weekend Breakfast" },
+  { id: "signature",      label: "Signature Platters" },
+  { id: "catering",   label: "Takeout Tray" },
+  { id: "catering", label: "Everyday Takeout Meals" },
 ];
-
 
 const gvizUrl = getGvizUrl(SHEET_URL);
 ---
@@ -32,7 +32,6 @@ const gvizUrl = getGvizUrl(SHEET_URL);
 
   <div class="menu-topbar">
     <div class="menu-note">* Taxes extra &nbsp;·&nbsp; Some items may contain nuts &nbsp;·&nbsp; Prices subject to change</div>
-    <a href="/order" class="btn-primary menu-order-btn">Order Now →</a>
   </div>
 
   <div class="menu-tabs-wrapper">
@@ -174,20 +173,66 @@ function renderSection(section) {
 
 function initTabs() {
   const tabs = document.querySelectorAll(".tab-btn");
+  const menuTabs = document.getElementById("menuTabs");
+  const menuWrapper = document.querySelector(".menu-tabs-wrapper");
+  let isUserScrolling = false;
+  let scrollTimeout;
+  
+  const updateFadeVisibility = () => {
+    if (menuTabs && menuWrapper) {
+      const hasScroll = menuTabs.scrollWidth > menuTabs.clientWidth;
+      const atEnd = menuTabs.scrollLeft + menuTabs.clientWidth >= menuTabs.scrollWidth - 5;
+      menuWrapper.style.setProperty("--fade-opacity", (hasScroll && !atEnd) ? "1" : "0");
+    }
+  };
+  
   tabs.forEach(btn => {
     btn.addEventListener("click", () => {
       const el = document.getElementById(btn.dataset.target);
-      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 124, behavior: "smooth" });
+      if (el) {
+        isUserScrolling = true;
+        clearTimeout(scrollTimeout);
+        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 124, behavior: "smooth" });
+        scrollTimeout = setTimeout(() => { isUserScrolling = false; }, 1000);
+      }
       tabs.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
     });
   });
+
   window.addEventListener("scroll", () => {
+    if (isUserScrolling) return;
     const sections = document.querySelectorAll(".menu-section");
     let current = "";
     sections.forEach(s => { if (s.getBoundingClientRect().top <= 132) current = s.id; });
-    tabs.forEach(btn => btn.classList.toggle("active", btn.dataset.target === current));
+    
+    tabs.forEach(btn => {
+      const isActive = btn.dataset.target === current;
+      btn.classList.toggle("active", isActive);
+      
+      if (isActive && menuTabs) {
+        const btnRect = btn.getBoundingClientRect();
+        const tabsRect = menuTabs.getBoundingClientRect();
+        
+        if (btnRect.right > tabsRect.right) {
+          const offset = btnRect.right - tabsRect.right + 20;
+          menuTabs.scrollBy({ left: offset, behavior: "smooth" });
+        }
+        else if (btnRect.left < tabsRect.left) {
+          const offset = btnRect.left - tabsRect.left - 20;
+          menuTabs.scrollBy({ left: offset, behavior: "smooth" });
+        }
+      }
+    });
   });
+
+  if (menuTabs) {
+    menuTabs.addEventListener("scroll", updateFadeVisibility);
+    window.addEventListener("load", updateFadeVisibility);
+    window.addEventListener("resize", updateFadeVisibility);
+    setTimeout(updateFadeVisibility, 100);
+  }
+  
   if (tabs.length) tabs[0].classList.add("active");
 }
 
@@ -238,7 +283,20 @@ document.addEventListener("DOMContentLoaded", loadMenu);
   .menu-note { font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.04em; }
   .menu-order-btn { padding: 0.5rem 1.4rem; font-size: 0.68rem; }
 
-  .menu-tabs-wrapper { position: sticky; top: 72px; z-index: 50; background: var(--dark); border-bottom: 1px solid var(--border); }
+  .menu-tabs-wrapper {
+    position: sticky; top: 72px; z-index: 50; background: var(--dark); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; overflow: hidden;
+  }
+  .menu-tabs-wrapper::after {
+    content: '';
+    position: absolute; right: 0; top: 0;
+    width: 120px; height: 100%;
+    background: linear-gradient(to right, transparent 0%, rgba(14,8,6,0.8) 50%, var(--dark) 85%);
+    pointer-events: none;
+    z-index: 10;
+    opacity: var(--fade-opacity, 0);
+    transition: opacity 0.3s;
+  }
   .menu-tabs { display: flex; overflow-x: auto; padding: 0 2rem; max-width: 1400px; margin: 0 auto; scrollbar-width: none; }
   .menu-tabs::-webkit-scrollbar { display: none; }
   .tab-btn {
