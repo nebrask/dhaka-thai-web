@@ -6,28 +6,19 @@ import Layout from '../layouts/Layout.astro';
   <div class="about-hero">
     <div class="about-hero-content">
       <div class="section-label">Who We Are</div>
-      <h1>About <em>Dhaka Thai Grill</em></h1>
+      <h1>About <em>Dhaka Thai & Grill</em></h1>
     </div>
   </div>
 
   <section class="about-main">
-    <div class="about-main-grid">
-      <div>
-        <div class="about-block-label">Our Mission</div>
-        <h2 class="about-block-heading">Fresh. Flavourful.<br/><em>Prepared with Care.</em></h2>
-        <p class="about-block-body">
-          We provide fresh, high-quality meals with consistent taste and reliable service, creating a takeout experience our customers can trust and enjoy every day.
-        </p>
-        <!--
-        <p class="about-block-body" style="margin-top:1rem">
-          Our focus is on quality ingredients, efficient service, and a consistent customer experience.
-          We aim to create a reliable takeout destination where every meal is prepared with care.
-        </p>
-        -->
-      </div>
-      <div class="about-signboard-panel">
-        <img src="/signboard.png" alt="Dhaka Thai & Grill" class="about-signboard-img" />
-      </div>
+    <div class="section-header">
+      <div class="section-label">Our Mission</div>
+      <h2 class="section-title">Fresh. Flavourful.<br/><em>Prepared with Care.</em></h2>
+    </div>
+    <div class="about-main-content">
+      <p class="about-block-body">
+        We provide fresh, high-quality meals with consistent taste and reliable service, creating a takeout experience our customers can trust and enjoy every day.
+      </p>
     </div>
   </section>
 
@@ -87,15 +78,14 @@ import Layout from '../layouts/Layout.astro';
   .about-hero-content h1 em { color: var(--red); font-style: normal; }
   .about-hero-content .section-label { margin-bottom: 0.8rem; }
 
-  .about-main { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
-  .about-main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-main { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; text-align: center; }
+  .about-main .section-header { padding: 0; margin-bottom: 2rem; }
+  .about-main .section-title em { color: var(--green); }
+  .about-main-content { max-width: 750px; margin: 0 auto; }
   .about-block-label { font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
   .about-block-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 600; color: var(--cream); line-height: 1.15; margin-bottom: 1.5rem; }
   .about-block-heading em { font-style: normal; color: var(--green); }
   .about-block-body { font-size: 0.88rem; line-height: 1.95; color: var(--cream-dim); font-weight: 300; }
-
-  .about-signboard-panel { background: var(--cream); padding: 1.5rem; border: 1px solid rgba(226,35,26,0.15); }
-  .about-signboard-img { width: 100%; display: block; mix-blend-mode: multiply; }
 
   .values-section { background: var(--dark-card); padding: 4rem 2rem 6rem; }
   .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
